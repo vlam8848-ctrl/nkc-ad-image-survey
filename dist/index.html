@@ -38,6 +38,20 @@
     .industry-meta{left:18px;right:18px;bottom:18px}.industry-meta span{margin-bottom:7px;font-size:11px}.industry-meta h4{font-size:clamp(21px,2.3vw,30px)}.industry-meta p{font-size:13px;line-height:1.4}
     .carousel-prev{left:39px}.carousel-next{right:39px}
     @media(max-width:680px){.industry-track{gap:12px}.industry-slide{flex-basis:78%;height:176px;min-height:0}.industry-meta{left:16px;bottom:16px}.carousel-prev{left:23px}.carousel-next{right:23px}}
+    /* Softer color system for a more expressive corporate survey */
+    body{background:radial-gradient(circle at 5% 12%,rgba(125,200,255,.25),transparent 22rem),radial-gradient(circle at 96% 34%,rgba(133,231,204,.18),transparent 20rem),#f5f8fc}
+    .hero{background:linear-gradient(135deg,#0757c7 0%,#1175dd 62%,#36a6e8 100%)}
+    .badges .badge:nth-child(2n){background:rgba(223,247,255,.16);border-color:rgba(185,232,255,.42)}
+    .section{isolation:isolate}
+    .section:after{content:"";position:absolute;z-index:0;right:-72px;top:-85px;width:180px;height:180px;border-radius:50%;opacity:.68;pointer-events:none}
+    .section>*{position:relative;z-index:1}
+    .section:nth-child(3n+1){background:linear-gradient(135deg,#fff 66%,#edf7ff);border-color:#d8eafa}.section:nth-child(3n+1):after{background:#b9e3ff}
+    .section:nth-child(3n+2){background:linear-gradient(135deg,#fff 66%,#effcf8);border-color:#d8eee7}.section:nth-child(3n+2):after{background:#bcefdc}
+    .section:nth-child(3n){background:linear-gradient(135deg,#fff 66%,#f3f1ff);border-color:#e3ddfa}.section:nth-child(3n):after{background:#d9ccff}
+    .section:nth-child(3n+2) .section-num{background:#e6f8f1;color:#16735b}.section:nth-child(3n) .section-num{background:#f0edff;color:#6552b8}
+    .section:nth-child(3n+2):before{background:#16a47f}.section:nth-child(3n):before{background:#7963d5}
+    .section-head h2{color:#17324d}.option{box-shadow:0 3px 10px rgba(45,88,128,.025)}.option:hover{box-shadow:0 8px 18px rgba(30,105,184,.08)}
+    .notice{background:linear-gradient(90deg,#e7f5ff,#f1f9ff)}
   </style>
 </head>
 <body>
