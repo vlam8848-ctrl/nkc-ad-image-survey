@@ -311,5 +311,14 @@
       window.updateProgress?.();
     });
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const positionField=document.querySelector('input[name="position"]')?.closest('.respondent-field');
+      if(positionField){
+        positionField.insertAdjacentHTML('afterend','<input type="hidden" name="position" value="">');
+        positionField.remove();
+      }
+    });
+  </script>
 </body></html>
 
