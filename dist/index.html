@@ -267,5 +267,49 @@
       window.setTimeout(()=>{if(!savedProfile())openProfile()},420);
     });
   </script>
+  <script>
+    // Hai tình huống mua thực tế để đo mức ưu tiên và lý do đổi quyết định.
+    document.addEventListener('DOMContentLoaded',()=>{
+      const lastSection=document.querySelector('#surveyForm .section:last-of-type');
+      if(!lastSection)return;
+      lastSection.insertAdjacentHTML('afterend',`<section class="section scenario-section" id="part-07"><div class="section-head"><div class="section-num">PHẦN 07</div><h2>TÌNH HUỐNG MUA HÀNG</h2><p class="section-desc">Một vài tình huống ngắn để hiểu điều bạn thực sự ưu tiên khi lựa chọn.</p></div><div class="question" data-name="valueTradeoff"><p class="question-title">Nếu sản phẩm có giá cao hơn khoảng 10% nhưng bảo hành lâu hơn và hỗ trợ tốt hơn, bạn sẽ chọn thế nào? <span class="req">*</span></p><div class="options" data-type="single"><label class="option"><input type="radio" name="valueTradeoff" value="Vẫn ưu tiên sản phẩm này">Vẫn ưu tiên sản phẩm này</label><label class="option"><input type="radio" name="valueTradeoff" value="Cân nhắc nếu quyền lợi rõ ràng">Cân nhắc nếu quyền lợi rõ ràng</label><label class="option"><input type="radio" name="valueTradeoff" value="Chỉ chọn nếu chênh lệch nhỏ hơn">Chỉ chọn nếu chênh lệch nhỏ hơn</label><label class="option"><input type="radio" name="valueTradeoff" value="Ưu tiên sản phẩm giá thấp hơn">Ưu tiên sản phẩm giá thấp hơn</label><label class="option"><input type="radio" name="valueTradeoff" value="Cần xem thêm thông tin trước khi quyết định">Cần xem thêm thông tin trước khi quyết định</label></div></div><div class="question" data-name="decisionSwitch"><p class="question-title">Nếu có sản phẩm tương đương ở nơi khác rẻ hơn, điều gì khiến bạn vẫn mua ở đây hoặc đổi sang nơi khác? <span class="req">*</span></p><textarea name="decisionSwitch" placeholder="Ví dụ: bảo hành rõ ràng, uy tín cửa hàng, giá thấp hơn, ưu đãi tốt hơn..."></textarea></div></section>`);
+      const scenarioQuestions=[...document.querySelectorAll('.scenario-section .question')];
+      const scenarioValue=()=>({
+        valueTradeoff:document.querySelector('input[name="valueTradeoff"]:checked')?.value||'',
+        decisionSwitch:document.querySelector('[name="decisionSwitch"]')?.value.trim()||''
+      });
+      const originalUpdate=window.updateProgress;
+      if(typeof originalUpdate==='function'){
+        window.updateProgress=()=>{
+          originalUpdate();
+          const allQuestions=[...document.querySelectorAll('.question[data-name]')];
+          const answered=allQuestions.filter(question=>{
+            const name=question.dataset.name;
+            return name==='feedback'||name==='decisionSwitch'?Boolean(question.querySelector('textarea')?.value.trim()):Boolean(question.querySelector('input:checked'));
+          }).length;
+          const total=15;
+          document.getElementById('progressFill').style.width=Math.round(answered/total*100)+'%';
+          document.getElementById('progressText').textContent=`${answered}/${total}`;
+          document.getElementById('mobileGuidance').textContent=answered===total?'Đã hoàn thành tất cả câu hỏi · bạn có thể gửi phản hồi':`Đã trả lời ${answered}/${total} câu · hãy tiếp tục theo cảm nhận tự nhiên`;
+        };
+      }
+      scenarioQuestions.forEach(question=>question.addEventListener('input',()=>window.updateProgress?.()));
+      scenarioQuestions.forEach(question=>question.addEventListener('change',()=>{question.classList.remove('invalid');window.updateProgress?.()}));
+      document.querySelector('.hero-note').textContent='15 câu · khoảng 4–6 phút';
+      const getScenarioError=()=>{const values=scenarioValue();return !values.valueTradeoff?'Vui lòng chọn một phương án cho tình huống giá và bảo hành.':(!values.decisionSwitch?'Vui lòng chia sẻ điều có thể khiến bạn thay đổi lựa chọn.':'')};
+      document.getElementById('surveyForm')?.addEventListener('submit',event=>{
+        const error=getScenarioError();
+        if(!error)return;
+        event.preventDefault();event.stopImmediatePropagation();
+        const target=!scenarioValue().valueTradeoff?scenarioQuestions[0]:scenarioQuestions[1];
+        target.classList.add('invalid','active');target.scrollIntoView({behavior:'smooth',block:'center'});
+        const toast=document.getElementById('toast');if(toast){toast.textContent=error;toast.className='toast show error';window.setTimeout(()=>toast.className='toast',3800)};
+      },true);
+      const baseFetch=window.fetch.bind(window);
+      window.fetch=(resource,options={})=>{if(options.body&&typeof options.body==='string'){try{const payload=JSON.parse(options.body);Object.assign(payload,scenarioValue());options={...options,body:JSON.stringify(payload)}}catch{}}return baseFetch(resource,options)};
+      document.getElementById('surveyForm')?.addEventListener('submit',()=>window.setTimeout(()=>{try{const records=JSON.parse(localStorage.getItem('nkc_ad_survey_responses')||'[]');if(records.length)Object.assign(records[records.length-1],scenarioValue());localStorage.setItem('nkc_ad_survey_responses',JSON.stringify(records))}catch{}},0));
+      window.updateProgress?.();
+    });
+  </script>
 </body></html>
 
