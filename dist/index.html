@@ -94,6 +94,13 @@
     .section-head{display:block!important;margin-bottom:22px}.section-desc{margin-top:7px;max-width:680px;text-align:left!important}
     .options{grid-template-columns:1fr!important;max-width:760px}.option{min-height:50px;padding:11px 14px}
     @media(min-width:760px){.question{max-width:840px}.question-title{margin-bottom:11px}}
+    /* Focused ad stage: full image, no crop, motion used to guide attention */
+    .industry-track{gap:0}.industry-slide{flex:0 0 100%;height:clamp(270px,32vw,390px);min-height:0;background:#fff;opacity:1;filter:none;transform:none;border:0;border-radius:16px;box-shadow:none}.industry-slide.active{transform:none;border:0;box-shadow:none}.industry-slide img,.industry-slide.active img{object-fit:contain;opacity:1;transform:scale(1.04);filter:none;animation:adBreath 7.5s cubic-bezier(.22,1,.36,1) infinite}.industry-slide:after,.industry-slide.active:after{background:linear-gradient(90deg,rgba(18,18,22,.78) 0%,rgba(18,18,22,.18) 48%,rgba(18,18,22,0) 78%)}.industry-meta{left:28px;bottom:24px;max-width:410px}.industry-meta h4{font-size:clamp(30px,4vw,50px)}
+    .section-head{max-width:900px;margin:0 auto 26px!important}.section-head .section-desc{margin:7px 0 0!important;max-width:640px;text-align:left!important}.section>.question{max-width:900px;margin-left:auto;margin-right:auto}.section>.notice{max-width:900px;margin-left:auto;margin-right:auto}.section .submit-row{max-width:900px;margin-left:auto;margin-right:auto}
+    .section{padding:clamp(26px,4vw,46px)}.section:after{width:150px;height:150px;right:-58px;top:-58px}.option{transition:transform .18s cubic-bezier(.22,1,.36,1),border-color .18s ease,background .18s ease,box-shadow .18s ease}.option:hover{transform:translateX(5px);box-shadow:0 9px 22px rgba(185,44,47,.09)}
+    @keyframes adBreath{0%,100%{transform:scale(1.035)}50%{transform:scale(1.08)}}
+    @media(max-width:680px){.industry-slide{height:225px}.industry-meta{left:18px;bottom:16px}.industry-meta h4{font-size:28px}.section{padding:25px 18px}.section-head{margin-bottom:20px!important}.option:hover{transform:none}}
+    @media(prefers-reduced-motion:reduce){.industry-slide img,.industry-slide.active img{animation:none;transform:none}.option{transition:none}.option:hover{transform:none}}
   </style>
 </head>
 <body>
