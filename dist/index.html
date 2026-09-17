@@ -229,5 +229,43 @@
       },true);
     });
   </script>
+  <script>
+    // Thu thập thông tin người tham gia trước khi bắt đầu khảo sát.
+    document.addEventListener('DOMContentLoaded',()=>{
+      const profileKey='nkc_survey_respondent';
+      const savedProfile=()=>{try{return JSON.parse(sessionStorage.getItem(profileKey)||'null')}catch{return null}};
+      const profile=savedProfile();
+      document.head.insertAdjacentHTML('beforeend',`<style>
+        .respondent-modal{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:20px;background:rgba(15,28,48,.46);backdrop-filter:blur(12px);opacity:0;visibility:hidden;transition:opacity .28s ease,visibility .28s}
+        .respondent-modal.is-open{opacity:1;visibility:visible}
+        .respondent-card{width:min(100%,510px);max-height:min(720px,calc(100vh - 40px));overflow:auto;background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.8);border-radius:28px;padding:30px;box-shadow:0 26px 80px rgba(12,31,58,.26);transform:translateY(14px) scale(.98);transition:transform .3s cubic-bezier(.22,1,.36,1)}
+        .respondent-modal.is-open .respondent-card{transform:none}.respondent-kicker{display:inline-flex;padding:7px 10px;border-radius:999px;background:#fff1f1;color:#c72732;font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.respondent-card h2{margin:14px 0 7px;font-size:clamp(1.45rem,4vw,2rem);letter-spacing:-.045em;color:#14243a}.respondent-card>p{margin:0 0 23px;line-height:1.55;color:#627187}.respondent-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.respondent-field{display:grid;gap:7px;font-size:.9rem;font-weight:700;color:#26384f}.respondent-field.full{grid-column:1/-1}.respondent-field input{box-sizing:border-box;min-height:48px;width:100%;border:1px solid #d8e0eb;border-radius:13px;padding:0 14px;background:#fff;color:#14243a;font:inherit;font-weight:500;outline:none;transition:border-color .2s,box-shadow .2s}.respondent-field input:focus{border-color:#d92838;box-shadow:0 0 0 4px rgba(217,40,56,.1)}.respondent-consent{margin:18px 0;color:#708096;font-size:.82rem;line-height:1.45}.respondent-submit{width:100%;min-height:52px;border:0;border-radius:15px;background:linear-gradient(110deg,#d82034,#f04a3e);box-shadow:0 12px 24px rgba(210,35,51,.22);color:#fff;font:inherit;font-weight:800;font-size:1rem;cursor:pointer}.respondent-error{min-height:19px;margin:9px 0 0;color:#c92533;font-size:.86rem;font-weight:700}@media(max-width:520px){.respondent-card{padding:24px 19px;border-radius:23px}.respondent-fields{grid-template-columns:1fr}.respondent-field.full{grid-column:auto}}
+      </style>`);
+      document.body.insertAdjacentHTML('beforeend',`<div class="respondent-modal" id="respondentModal" role="dialog" aria-modal="true" aria-labelledby="respondentTitle"><form class="respondent-card" id="respondentForm" novalidate><span class="respondent-kicker">Bắt đầu khảo sát</span><h2 id="respondentTitle">Cho chúng tôi biết về bạn</h2><p>Thông tin này giúp NKC hiểu rõ hơn góc nhìn của từng nhóm khách hàng.</p><div class="respondent-fields"><label class="respondent-field full">Họ và tên <span class="req">*</span><input name="name" autocomplete="name" placeholder="Ví dụ: Nguyễn Văn A" required></label><label class="respondent-field">Công ty / đơn vị<input name="company" autocomplete="organization" placeholder="Tên công ty hoặc đơn vị"></label><label class="respondent-field">Chức danh<input name="position" autocomplete="organization-title" placeholder="Ví dụ: Nhân viên kinh doanh"></label><label class="respondent-field full">Email hoặc số điện thoại<input name="contact" autocomplete="email" placeholder="Để liên hệ khi cần thiết"></label></div><p class="respondent-consent">Thông tin chỉ được dùng để tổng hợp kết quả khảo sát và không hiển thị công khai.</p><button class="respondent-submit" type="submit">Bắt đầu khảo sát</button><p class="respondent-error" aria-live="polite"></p></form></div>`);
+      const modal=document.getElementById('respondentModal'),profileForm=document.getElementById('respondentForm'),nameInput=profileForm.elements.name;
+      const openProfile=()=>{modal.classList.add('is-open');document.body.style.overflow='hidden';window.setTimeout(()=>nameInput.focus(),120)};
+      const closeProfile=()=>{modal.classList.remove('is-open');document.body.style.overflow=''};
+      if(profile){Object.entries(profile).forEach(([key,value])=>{if(profileForm.elements[key])profileForm.elements[key].value=value});}
+      document.querySelector('.hero-start')?.addEventListener('click',event=>{if(savedProfile())return;event.preventDefault();openProfile()});
+      profileForm.addEventListener('submit',event=>{event.preventDefault();const name=nameInput.value.trim();const error=profileForm.querySelector('.respondent-error');if(!name){error.textContent='Vui lòng cho chúng tôi biết họ và tên của bạn.';nameInput.focus();return}const respondent={name,company:profileForm.elements.company.value.trim(),position:profileForm.elements.position.value.trim(),contact:profileForm.elements.contact.value.trim()};sessionStorage.setItem(profileKey,JSON.stringify(respondent));window.nkcRespondent=respondent;closeProfile();document.getElementById('part-00')?.scrollIntoView({behavior:'smooth',block:'start'})});
+      window.nkcRespondent=profile||null;
+      const originalFetch=window.fetch.bind(window);
+      window.fetch=(resource,options={})=>{if(options.body&&typeof options.body==='string'&&window.nkcRespondent){try{const payload=JSON.parse(options.body);payload.respondent=window.nkcRespondent;options={...options,body:JSON.stringify(payload)}}catch{}}return originalFetch(resource,options)};
+      document.getElementById('surveyForm')?.addEventListener('submit',()=>{
+        window.setTimeout(()=>{
+          const respondent=window.nkcRespondent;
+          if(!respondent)return;
+          try{
+            const records=JSON.parse(localStorage.getItem('nkc_ad_survey_responses')||'[]');
+            if(records.length){
+              records[records.length-1].respondent=respondent;
+              localStorage.setItem('nkc_ad_survey_responses',JSON.stringify(records));
+            }
+          }catch{}
+        },0);
+      });
+      window.setTimeout(()=>{if(!savedProfile())openProfile()},420);
+    });
+  </script>
 </body></html>
 
