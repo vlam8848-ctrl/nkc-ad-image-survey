@@ -189,5 +189,45 @@
       revealStickyPreview();
     });
   </script>
+  <script>
+    // Quy tắc riêng cho phần chọn sản phẩm / ấn tượng đầu tiên.
+    document.addEventListener('DOMContentLoaded',()=>{
+      const choiceQuestion=document.querySelector('[data-name="attentionChoice"]');
+      const choiceTitle=choiceQuestion?.querySelector('.question-title');
+      if(choiceTitle)choiceTitle.childNodes[0].nodeValue='Sản phẩm nào bạn đang chú ý? ';
+
+      const reasonQuestion=document.querySelector('[data-name="attentionReason"]');
+      if(!reasonQuestion)return;
+      reasonQuestion.dataset.min='2';
+      reasonQuestion.dataset.max='7';
+      const hint=reasonQuestion.querySelector('.helper');
+      if(hint)hint.innerHTML='Chọn từ 2 đến 7 phương án. <span class="selection-count"></span>';
+
+      const picked=()=>[...reasonQuestion.querySelectorAll('input:checked')];
+      const syncSelectionHint=()=>{
+        const amount=picked().length;
+        const counter=reasonQuestion.querySelector('.selection-count');
+        if(counter)counter.textContent=amount<2?`${amount}/7 đã chọn · chọn thêm ${2-amount}`:`${amount}/7 đã chọn`;
+        reasonQuestion.classList.toggle('invalid',amount>0&&amount<2);
+      };
+      reasonQuestion.addEventListener('change',syncSelectionHint);
+      syncSelectionHint();
+
+      document.getElementById('surveyForm')?.addEventListener('submit',event=>{
+        const amount=picked().length;
+        if(amount>=2&&amount<=7)return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        reasonQuestion.classList.add('invalid','active');
+        reasonQuestion.scrollIntoView({behavior:'smooth',block:'center'});
+        const toast=document.getElementById('toast');
+        if(toast){
+          toast.textContent='Vui lòng chọn ít nhất 2 phương án ở câu này.';
+          toast.className='toast show error';
+          window.setTimeout(()=>toast.className='toast',3800);
+        }
+      },true);
+    });
+  </script>
 </body></html>
 
