@@ -424,13 +424,15 @@
         welcome.querySelector('.welcome-logo')?.setAttribute('src',brand.logo);
         welcome.querySelector('.welcome-logo')?.setAttribute('alt',brand.name);
         welcome.querySelector('.welcome-kicker')?.replaceChildren(document.createTextNode(`KHẢO SÁT CÙNG ${brand.name.toUpperCase()}`));
-        const welcomeText=welcome.querySelectorAll('p');
-        if(welcomeText[0])welcomeText[0].textContent=`${brand.short} mong muốn lắng nghe cảm nhận thực tế của bạn về các hình ảnh quảng cáo.`;
-        if(welcomeText[2])welcomeText[2].textContent=`Sau khi hoàn thành, bạn sẽ nhận được một phần quà cảm ơn từ ${brand.short}. Ý kiến của bạn sẽ giúp ${brand.short} cải thiện hình ảnh quảng cáo để dễ nhìn, dễ hiểu và hữu ích hơn.`;
+        const welcomeLeads=welcome.querySelectorAll('.welcome-lead');
+        if(welcomeLeads[0])welcomeLeads[0].textContent=`${brand.short} mong muốn lắng nghe cảm nhận thực tế của bạn về các hình ảnh quảng cáo.`;
+        if(welcomeLeads[1])welcomeLeads[1].textContent=`Sau khi hoàn thành, bạn sẽ nhận được một phần quà cảm ơn từ ${brand.short}. Ý kiến của bạn sẽ giúp ${brand.short} cải thiện hình ảnh quảng cáo để dễ nhìn, dễ hiểu và hữu ích hơn.`;
         const note=welcome.querySelector('.welcome-note');if(note)note.textContent=`Thông tin được sử dụng để ghi nhận người tham gia khảo sát và gửi quà cảm ơn từ ${brand.short}.`;
       }
       document.querySelector('.success')?.querySelectorAll('p').forEach((node,index)=>{if(index===0)node.textContent=`Cảm ơn bạn đã dành thời gian chia sẻ cùng ${brand.short}.`;if(index===1)node.textContent=`Những góp ý của bạn sẽ giúp ${brand.short} cải thiện hình ảnh quảng cáo để dễ nhìn, dễ hiểu và hữu ích hơn.`});
       const gift=document.querySelector('.gift-note p');if(gift)gift.textContent=`Phần quà cảm ơn của bạn sẽ được ${brand.short} gửi theo thông tin đã đăng ký.`;
+      const feedbackQuestion=document.querySelector('.question[data-name="feedback"]');
+      if(feedbackQuestion){const title=feedbackQuestion.querySelector('.question-title');if(title)title.childNodes[0].nodeValue=`Câu 13 — Bạn có góp ý gì để ${brand.short} cải thiện hình quảng cáo này tốt hơn? `;const helper=feedbackQuestion.querySelector('.helper');if(helper)helper.textContent=`Bạn có thể chia sẻ về nội dung, hình ảnh, màu sắc, cách trình bày hoặc bất kỳ điều gì bạn muốn ${brand.short} cải thiện.`;}
       const library=document.querySelector('.ad-library');
       if(library){
         library.innerHTML=`<div class="carousel-head"><div><p class="carousel-kicker">THƯ VIỆN HÌNH QUẢNG CÁO</p><h3>Hình quảng cáo ${brand.short}</h3><p>Mỗi ngành hàng một hình tiêu biểu.</p></div><span class="carousel-count"></span></div><div class="carousel-stage"><button class="carousel-control carousel-prev" type="button" aria-label="Ảnh trước">‹</button><div class="carousel-viewport"><div class="industry-track">${brand.slides.map((item,index)=>`<article class="industry-slide"><img src="${item[2]}" alt="Hình quảng cáo ${brand.short} ngành ${item[0]}"><div class="industry-meta"><span>NHÓM NGÀNH ${String(index+1).padStart(2,'0')}</span><h4>${item[0]}</h4><p>${item[1]}</p></div></article>`).join('')}</div></div><button class="carousel-control carousel-next" type="button" aria-label="Ảnh tiếp theo">›</button><div class="carousel-footer"><div class="carousel-dots">${brand.slides.map((_,index)=>`<button class="carousel-dot" type="button" aria-label="Xem ngành hàng ${index+1}"></button>`).join('')}</div><p class="carousel-hint">Tự chuyển · vuốt hoặc dùng mũi tên để xem</p></div></div>`;
