@@ -8,7 +8,7 @@ const SPREADSHEET_ID = '1KnlrbpRAFwiVJLX-Rcy3IbNsTsQkU0GftcTg6tlr3WU';
 const SHEET_NAME = 'Phản hồi';
 
 function doGet() {
-  return jsonResponse({ ok: true, message: 'NKC Survey endpoint is ready.' });
+  return jsonResponse({ ok: true, message: 'Nguyên Kim Survey endpoint is ready.' });
 }
 
 function doPost(event) {
