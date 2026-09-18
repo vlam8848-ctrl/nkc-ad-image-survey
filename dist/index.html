@@ -407,7 +407,7 @@
         cn:{key:'cn',name:'Công Nghệ Chính Nhân',short:'Chính Nhân',logo:'images/chinh-nhan-logo.png',primary:'#df6b25',accent:'#ffb56e',soft:'#fff0e5',ink:'#5a2412',slides:[
           ['Laptop','Thiết bị phục vụ học tập và công việc.','images/chinh-nhan/laptop.jpg'],['Linh kiện','Nâng cấp hiệu năng và cấu hình máy tính.','images/chinh-nhan/components.png'],['Màn hình','Không gian hiển thị rõ nét cho công việc.','images/chinh-nhan/monitor.png'],['Máy in','Giải pháp in ấn cho nhu cầu hằng ngày.','images/chinh-nhan/printer.png'],['PC','Hiệu năng ổn định cho công việc hiện đại.','images/chinh-nhan/pc.jpg'],['Phần mềm','Công cụ số hỗ trợ sáng tạo và vận hành.','images/chinh-nhan/software.jpg']]},
         smc:{key:'smc',name:'Kết Nối Thông Minh',short:'Kết Nối Thông Minh',logo:'images/smc-logo.png',primary:'#0878bd',accent:'#64c9fb',soft:'#e9f7ff',ink:'#073a63',slides:[
-          ['Laptop','Hình mẫu chờ cập nhật bộ quảng cáo Kết Nối Thông Minh.','images/category-laptop.jpg'],['Linh kiện','Hình mẫu chờ cập nhật bộ quảng cáo Kết Nối Thông Minh.','images/category-components.jpg'],['Màn hình','Hình mẫu chờ cập nhật bộ quảng cáo Kết Nối Thông Minh.','images/category-monitor.png'],['Máy in','Hình mẫu chờ cập nhật bộ quảng cáo Kết Nối Thông Minh.','images/category-printer.jpg'],['PC & Mini PC','Hình mẫu chờ cập nhật bộ quảng cáo Kết Nối Thông Minh.','images/category-pc.jpg'],['Phần mềm','Hình mẫu chờ cập nhật bộ quảng cáo Kết Nối Thông Minh.','images/category-software.png']]}
+          ['Kết Nối Thông Minh','Hình truyền thông chính thức của Kết Nối Thông Minh.','images/smc/smc-national-day.png']]}
       };
       const brand=brands[brandKey]||brands.nk;
       document.body.classList.add(`brand-${brand.key}`);
@@ -481,21 +481,21 @@
     document.addEventListener('DOMContentLoaded',()=>{
       const key=(new URLSearchParams(location.search).get('brand')||'nk').toLowerCase();
       const sets={
-        nk:[['Laptop','images/category-laptop.jpg'],['Linh kiện','images/category-components.jpg'],['Màn hình','images/category-monitor.png'],['Máy in','images/category-printer.jpg'],['PC & Mini PC','images/category-pc.jpg'],['Phần mềm','images/category-software.png']],
-        cn:[['Laptop','images/chinh-nhan/laptop.jpg'],['Linh kiện','images/chinh-nhan/components.png'],['Màn hình','images/chinh-nhan/monitor.png'],['Máy in','images/chinh-nhan/printer.png'],['PC','images/chinh-nhan/pc.jpg'],['Phần mềm','images/chinh-nhan/software.jpg']],
-        smc:[['Laptop','images/category-laptop.jpg'],['Linh kiện','images/category-components.jpg'],['Màn hình','images/category-monitor.png'],['Máy in','images/category-printer.jpg'],['PC & Mini PC','images/category-pc.jpg'],['Phần mềm','images/category-software.png']]
+        nk:{name:'Nguyên Kim',slides:[['Laptop','images/category-laptop.jpg'],['Linh kiện','images/category-components.jpg'],['Màn hình','images/category-monitor.png'],['Máy in','images/category-printer.jpg'],['PC & Mini PC','images/category-pc.jpg'],['Phần mềm','images/category-software.png']]},
+        cn:{name:'Chính Nhân',slides:[['Laptop','images/chinh-nhan/laptop.jpg'],['Linh kiện','images/chinh-nhan/components.png'],['Màn hình','images/chinh-nhan/monitor.png'],['Máy in','images/chinh-nhan/printer.png'],['PC','images/chinh-nhan/pc.jpg'],['Phần mềm','images/chinh-nhan/software.jpg']]},
+        smc:{name:'Kết Nối Thông Minh',slides:[['Kết Nối Thông Minh','images/smc/smc-national-day.png']]}
       };
-      const slides=sets[key]||sets.nk;
+      const brandSet=sets[key]||sets.nk,slides=brandSet.slides;
       const library=document.querySelector('.ad-library');
       if(!library)return;
-      library.innerHTML=`<div class="stable-carousel-head"><div><p>THƯ VIỆN HÌNH QUẢNG CÁO</p><h3>Hình quảng cáo đang khảo sát</h3><span>Mỗi ngành hàng một hình tiêu biểu.</span></div><span class="stable-autoplay">Tự chuyển</span></div><div class="stable-carousel"><button type="button" class="stable-arrow stable-prev" aria-label="Xem hình trước">‹</button><div class="stable-viewport"><div class="stable-track">${slides.map((slide,index)=>`<article class="stable-slide"><img src="${slide[1]}" alt="Hình quảng cáo ngành ${slide[0]}"><div><small>NHÓM NGÀNH ${String(index+1).padStart(2,'0')}</small><h4>${slide[0]}</h4></div></article>`).join('')}</div></div><button type="button" class="stable-arrow stable-next" aria-label="Xem hình tiếp theo">›</button></div><p class="stable-hint">Hình tự chuyển · dùng mũi tên để xem thêm</p>`;
+      library.innerHTML=`<div class="stable-carousel-head"><div><p>THƯ VIỆN HÌNH QUẢNG CÁO</p><h3>Hình quảng cáo ${brandSet.name}</h3><span>${slides.length>1?'Mỗi ngành hàng một hình tiêu biểu.':'Hình truyền thông đang được khảo sát.'}</span></div>${slides.length>1?'<span class="stable-autoplay">Tự chuyển</span>':''}</div><div class="stable-carousel"><button type="button" class="stable-arrow stable-prev" aria-label="Xem hình trước" ${slides.length===1?'hidden':''}>‹</button><div class="stable-viewport"><div class="stable-track">${slides.map((slide,index)=>`<article class="stable-slide"><img src="${slide[1]}" alt="Hình quảng cáo ${brandSet.name} ${slide[0]}"><div><small>${slides.length>1?`NHÓM NGÀNH ${String(index+1).padStart(2,'0')}`:'HÌNH TRUYỀN THÔNG'}</small><h4>${slide[0]}</h4></div></article>`).join('')}</div></div><button type="button" class="stable-arrow stable-next" aria-label="Xem hình tiếp theo" ${slides.length===1?'hidden':''}>›</button></div>${slides.length>1?'<p class="stable-hint">Hình tự chuyển · dùng mũi tên để xem thêm</p>':''}`;
       const viewport=library.querySelector('.stable-viewport'),track=library.querySelector('.stable-track');
       let maxStart=Math.max(0,slides.length-3);let start=0,timer=null;
       const syncRange=()=>{const visible=innerWidth<=420?1:innerWidth<=720?2:3;maxStart=Math.max(0,slides.length-visible);};
       const render=next=>{start=((next%(maxStart+1))+(maxStart+1))%(maxStart+1);const card=track.querySelector('.stable-slide');const gap=16;const distance=(card?.getBoundingClientRect().width||0)+gap;track.style.transform=`translate3d(-${start*distance}px,0,0)`;const focus=slides[Math.min(start+1,slides.length-1)];document.dispatchEvent(new CustomEvent('nkc:slidechange',{detail:{name:focus[0],image:focus[1]}}));};
       const stop=()=>{if(timer){clearInterval(timer);timer=null}};const play=()=>{stop();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>render(start>=maxStart?0:start+1),4400)};
-      library.querySelector('.stable-prev').addEventListener('click',()=>{render(start===0?maxStart:start-1);play()});
-      library.querySelector('.stable-next').addEventListener('click',()=>{render(start>=maxStart?0:start+1);play()});
+      library.querySelector('.stable-prev')?.addEventListener('click',()=>{render(start===0?maxStart:start-1);play()});
+      library.querySelector('.stable-next')?.addEventListener('click',()=>{render(start>=maxStart?0:start+1);play()});
       viewport.addEventListener('pointerenter',stop);viewport.addEventListener('pointerleave',play);viewport.addEventListener('pointerdown',stop);viewport.addEventListener('pointerup',play);
       window.addEventListener('resize',()=>{syncRange();render(start)},{passive:true});syncRange();render(0);play();
       const style=document.createElement('style');style.textContent=`
