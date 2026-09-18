@@ -190,14 +190,20 @@
     });
   </script>
   <script>
-    // Quy tắc riêng cho phần chọn sản phẩm / ấn tượng đầu tiên.
+    // Quy tắc riêng cho phần ấn tượng đầu tiên.
     document.addEventListener('DOMContentLoaded',()=>{
       const choiceQuestion=document.querySelector('[data-name="attentionChoice"]');
-      const choiceTitle=choiceQuestion?.querySelector('.question-title');
-      if(choiceTitle)choiceTitle.childNodes[0].nodeValue='Sản phẩm nào bạn đang chú ý? ';
+      choiceQuestion?.remove();
+      const firstImpression=document.querySelector('#part-02');
+      const sectionDescription=firstImpression?.querySelector('.section-desc');
+      if(sectionDescription)sectionDescription.textContent='Quan sát nhanh các hình theo nhóm ngành và chia sẻ điều thu hút bạn.';
+      const reviewNotice=document.querySelector('#part-03 .notice');
+      if(reviewNotice)reviewNotice.textContent='Từ phần này, hãy đánh giá theo cảm nhận của bạn về hình quảng cáo đang xem.';
 
       const reasonQuestion=document.querySelector('[data-name="attentionReason"]');
       if(!reasonQuestion)return;
+      const reasonTitle=reasonQuestion.querySelector('.question-title');
+      if(reasonTitle)reasonTitle.childNodes[0].nodeValue='Bạn chú ý đến những yếu tố nào của hình quảng cáo? ';
       reasonQuestion.dataset.min='2';
       reasonQuestion.dataset.max='7';
       const hint=reasonQuestion.querySelector('.helper');
@@ -289,7 +295,7 @@
             const name=question.dataset.name;
             return name==='feedback'||name==='decisionSwitch'?Boolean(question.querySelector('textarea')?.value.trim()):Boolean(question.querySelector('input:checked'));
           }).length;
-          const total=15;
+          const total=14;
           document.getElementById('progressFill').style.width=Math.round(answered/total*100)+'%';
           document.getElementById('progressText').textContent=`${answered}/${total}`;
           document.getElementById('mobileGuidance').textContent=answered===total?'Đã hoàn thành tất cả câu hỏi · bạn có thể gửi phản hồi':`Đã trả lời ${answered}/${total} câu · hãy tiếp tục theo cảm nhận tự nhiên`;
@@ -297,7 +303,7 @@
       }
       scenarioQuestions.forEach(question=>question.addEventListener('input',()=>window.updateProgress?.()));
       scenarioQuestions.forEach(question=>question.addEventListener('change',()=>{question.classList.remove('invalid');window.updateProgress?.()}));
-      document.querySelector('.hero-note').textContent='15 câu · khoảng 4–6 phút';
+      document.querySelector('.hero-note').textContent='14 câu · khoảng 4–6 phút';
       const getScenarioError=()=>{const values=scenarioValue();return !values.valueTradeoff?'Vui lòng chọn một phương án cho tình huống giá và bảo hành.':(!values.decisionSwitch?'Vui lòng chia sẻ điều có thể khiến bạn thay đổi lựa chọn.':'')};
       document.getElementById('surveyForm')?.addEventListener('submit',event=>{
         const error=getScenarioError();
