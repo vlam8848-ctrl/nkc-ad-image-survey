@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Khảo sát trải nghiệm khách hàng về hiệu quả truyền tải thông tin hình ảnh quảng cáo." />
-  <title>NKC | Khảo sát trải nghiệm khách hàng</title>
+  <title>Nguyên Kim | Khảo sát trải nghiệm khách hàng</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -110,7 +110,7 @@
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="topbar-inner"><div class="brand"><strong>NKC</strong><span>Khảo sát trải nghiệm khách hàng</span></div><div class="progress-wrap" aria-label="Tiến độ khảo sát"><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><span class="progress-text" id="progressText">0/13</span></div></div></header>
+  <header class="topbar"><div class="topbar-inner"><div class="brand"><strong>Nguyên Kim</strong><span>Khảo sát trải nghiệm khách hàng</span></div><div class="progress-wrap" aria-label="Tiến độ khảo sát"><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><span class="progress-text" id="progressText">0/14</span></div></div></header>
   <main class="shell"><div id="surveyContent"><section class="hero"><div class="eyebrow">Khảo sát khách hàng</div><h1>Đánh giá hiệu quả truyền tải thông tin của hình ảnh quảng cáo</h1><p>Chúng tôi muốn biết khách hàng thực sự nhìn thấy gì, hiểu gì và nhớ gì sau khi xem hình quảng cáo. Bạn không cần có kiến thức về thiết kế đồ họa. Hãy trả lời theo cảm nhận tự nhiên và nhanh nhất của mình.</p><div class="badges"><span class="badge">Khảo sát khoảng 3–5 phút</span><span class="badge">Không cần kiến thức thiết kế</span><span class="badge">Ưu tiên cảm nhận đầu tiên</span><span class="badge">Thông tin chỉ dùng để cải thiện nội dung</span></div></section>
   <div class="mobile-guidance" id="mobileGuidance">Bạn đang ở đầu khảo sát · trả lời theo cảm nhận tự nhiên</div><form id="surveyForm" novalidate>
     <section class="section"><div class="section-head"><div class="section-num">PHẦN 00</div><h2>THÔNG TIN CHUNG</h2><p class="section-desc">Giúp chúng tôi hiểu rõ hơn mục đích sử dụng sản phẩm của bạn.</p></div><div class="question" data-name="purpose"><p class="question-title">Bạn thường tìm hiểu hoặc mua sản phẩm công nghệ cho mục đích nào? <span class="req">*</span></p><div class="options" data-type="single"> <label class="option"><input type="radio" name="purpose" value="Học tập">Học tập</label><label class="option"><input type="radio" name="purpose" value="Làm việc văn phòng">Làm việc văn phòng</label><label class="option"><input type="radio" name="purpose" value="Công việc chuyên môn / kỹ thuật">Công việc chuyên môn / kỹ thuật</label><label class="option"><input type="radio" name="purpose" value="Kinh doanh / doanh nghiệp">Kinh doanh / doanh nghiệp</label><label class="option"><input type="radio" name="purpose" value="Giải trí / sử dụng cá nhân">Giải trí / sử dụng cá nhân</label><label class="option"><input type="radio" name="purpose" value="Mua cho gia đình / người khác">Mua cho gia đình / người khác</label><label class="option"><input type="radio" name="purpose" value="Khác">Khác</label></div></div></section>
@@ -326,6 +326,76 @@
         positionField.insertAdjacentHTML('afterend','<input type="hidden" name="position" value="">');
         positionField.remove();
       }
+    });
+  </script>
+  <script>
+    // Lớp chào và thông tin người tham gia của Nguyên Kim.
+    document.addEventListener('DOMContentLoaded',()=>{
+      const logoPath='images/nguyen-kim-logo.png';
+      const participantKey='nguyen_kim_survey_participant';
+      const readParticipant=()=>{try{return JSON.parse(sessionStorage.getItem(participantKey)||'null')}catch{return null}};
+      const saveParticipant=value=>sessionStorage.setItem(participantKey,JSON.stringify(value));
+      document.title='Nguyên Kim | Khảo sát trải nghiệm khách hàng';
+
+      const brand=document.querySelector('.brand');
+      if(brand)brand.innerHTML=`<img class="nguyen-kim-header-logo" src="${logoPath}" alt="Nguyên Kim Computer"><span>Khảo sát trải nghiệm khách hàng</span>`;
+      const hero=document.querySelector('.hero');
+      if(hero){
+        const eyebrow=hero.querySelector('.eyebrow');
+        const heading=hero.querySelector('h1');
+        const description=hero.querySelector('p');
+        if(eyebrow)eyebrow.textContent='Nguyên Kim · Khảo sát khách hàng';
+        if(heading)heading.textContent='Đánh giá hiệu quả truyền tải thông tin của hình ảnh quảng cáo';
+        if(description)description.textContent='Nguyên Kim muốn biết bạn thực sự nhìn thấy gì, hiểu gì và nhớ gì sau khi xem hình quảng cáo. Không cần kiến thức về thiết kế, hãy trả lời theo cảm nhận tự nhiên và nhanh nhất của bạn.';
+        let badges=hero.querySelector('.badges');
+        if(!badges){badges=document.createElement('div');badges.className='badges';hero.querySelector('.hero-copy')?.append(badges)}
+        badges.innerHTML='<span class="badge">Khoảng 3–5 phút</span><span class="badge">Không cần kiến thức thiết kế</span><span class="badge">Ưu tiên cảm nhận đầu tiên</span><span class="badge">Thông tin chỉ dùng để cải thiện nội dung</span>';
+      }
+      document.querySelector('.screen-brand')?.replaceChildren(document.createTextNode('NGUYÊN KIM'));
+      document.querySelector('.hero-note')?.replaceChildren(document.createTextNode('14 câu · khoảng 4–6 phút'));
+
+      const feedbackQuestion=document.querySelector('[data-name="feedback"]');
+      if(feedbackQuestion){
+        const title=feedbackQuestion.querySelector('.question-title');
+        const textarea=feedbackQuestion.querySelector('textarea');
+        if(title)title.childNodes[0].nodeValue='Câu 13 — Bạn có góp ý gì để Nguyên Kim cải thiện hình quảng cáo này tốt hơn? ';
+        if(!feedbackQuestion.querySelector('.feedback-helper')){
+          const helper=document.createElement('p');
+          helper.className='helper feedback-helper';
+          helper.textContent='Bạn có thể chia sẻ về nội dung, hình ảnh, màu sắc, cách trình bày hoặc bất kỳ điều gì bạn muốn Nguyên Kim cải thiện.';
+          title?.after(helper);
+        }
+        if(textarea){textarea.placeholder='Nhập góp ý của bạn tại đây...';textarea.style.minHeight='135px'}
+      }
+
+      const success=document.getElementById('success');
+      if(success)success.innerHTML='<div class="success-mark">✓</div><h2>Cảm ơn bạn đã hoàn thành khảo sát!</h2><p>Cảm ơn bạn đã dành thời gian chia sẻ cùng Nguyên Kim.</p><p>Những góp ý của bạn sẽ giúp Nguyên Kim cải thiện hình ảnh quảng cáo để dễ nhìn, dễ hiểu và hữu ích hơn.</p><div class="gift-note"><span>🎁</span><p>Phần quà cảm ơn của bạn sẽ được Nguyên Kim gửi theo thông tin đã đăng ký.</p></div>';
+
+      document.getElementById('respondentModal')?.remove();
+      document.head.insertAdjacentHTML('beforeend',`<style>
+        .nguyen-kim-header-logo{display:block;width:126px;height:42px;object-fit:contain;object-position:left center}.brand{display:grid;gap:2px}.brand>span{font-size:13px;color:#192a44}.hero .badges{display:flex!important;margin-top:24px}.welcome-overlay{position:fixed;inset:0;z-index:400;display:grid;place-items:center;padding:24px;background:rgba(19,42,68,.42);backdrop-filter:blur(11px);overflow-y:auto}.welcome-card{width:min(100%,620px);margin:auto;padding:clamp(26px,5vw,44px);background:#fffdf8;border:1px solid rgba(21,91,211,.2);box-shadow:0 24px 70px rgba(18,47,78,.24)}.welcome-logo{display:block;max-width:205px;width:58%;height:auto;margin-bottom:23px}.welcome-kicker{margin:0 0 8px;color:#155bd3;font-size:.8rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.welcome-card h1{margin:0;color:#192a44;font-size:clamp(1.75rem,5vw,2.55rem);line-height:1.12;letter-spacing:-.04em}.welcome-lead{margin:13px 0 0;color:#4e6173;line-height:1.65}.welcome-time{margin:10px 0 0;color:#192a44;font-weight:700}.welcome-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0}.welcome-fact{min-height:86px;padding:12px;border:1px solid #d8e7f4;background:#f9fcff;color:#294762;font-size:.84rem;line-height:1.35}.welcome-fact b{display:block;margin-bottom:4px;font-size:1.15rem}.welcome-form{display:grid;gap:14px}.welcome-field{display:grid;gap:7px;color:#26384f;font-size:.92rem;font-weight:700}.welcome-field input{width:100%;min-height:52px;padding:0 15px;border:1px solid #c8d9e9;border-radius:14px;background:#fff;color:#192a44;outline:0}.welcome-field input:focus{border-color:#155bd3;box-shadow:0 0 0 4px rgba(21,91,211,.12)}.field-error{min-height:18px;color:#be2d35;font-size:.8rem;font-weight:600}.welcome-note{margin:5px 0 0;color:#617184;font-size:.82rem;line-height:1.55}.welcome-submit{min-height:54px;border:0;border-radius:14px;background:#155bd3;color:#fff;font-weight:800;letter-spacing:.04em;box-shadow:0 8px 18px rgba(21,91,211,.22);transition:.2s}.welcome-submit:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}.gift-note{display:flex;align-items:flex-start;gap:11px;max-width:520px;margin:22px auto 0;padding:14px 16px;border:1px solid #dbe7f6;background:#f7fbff;text-align:left}.gift-note span{font-size:22px}.gift-note p{margin:0;font-size:15px!important;color:#35536f!important}@media(max-width:560px){.welcome-overlay{padding:16px}.welcome-card{padding:26px 20px}.welcome-facts{grid-template-columns:1fr}.welcome-fact{min-height:0}.nguyen-kim-header-logo{width:108px;height:36px}.brand>span{font-size:11px}.gift-note{padding:13px}.hero .badges{gap:8px}}
+      </style>`);
+      const overlay=document.createElement('div');
+      overlay.className='welcome-overlay';
+      overlay.innerHTML=`<section class="welcome-card" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle"><img class="welcome-logo" src="${logoPath}" alt="Nguyên Kim Computer"><p class="welcome-kicker">Khảo sát cùng Nguyên Kim</p><h1 id="welcomeTitle">Chia sẻ ý kiến – Nhận quà cảm ơn</h1><p class="welcome-lead">Nguyên Kim mong muốn lắng nghe cảm nhận thực tế của bạn về các hình ảnh quảng cáo.</p><p class="welcome-time">Chỉ mất khoảng 3–5 phút để hoàn thành khảo sát.</p><p class="welcome-lead">Sau khi hoàn thành, bạn sẽ nhận được một phần quà cảm ơn từ Nguyên Kim. Ý kiến của bạn sẽ giúp Nguyên Kim cải thiện hình ảnh quảng cáo để dễ nhìn, dễ hiểu và hữu ích hơn.</p><div class="welcome-facts"><div class="welcome-fact"><b>🎁</b>Có quà cảm ơn</div><div class="welcome-fact"><b>⏱</b>Chỉ khoảng 3–5 phút</div><div class="welcome-fact"><b>💬</b>Không cần kiến thức về thiết kế</div></div><form class="welcome-form" id="welcomeForm" novalidate><label class="welcome-field">Họ và tên <span class="req">*</span><input name="fullName" autocomplete="name" placeholder="Nhập họ và tên của bạn"><span class="field-error" data-error="fullName"></span></label><label class="welcome-field">Số điện thoại <span class="req">*</span><input name="phone" inputmode="tel" autocomplete="tel" placeholder="Nhập số điện thoại"><span class="field-error" data-error="phone"></span></label><label class="welcome-field">Email <span class="req">*</span><input name="email" inputmode="email" autocomplete="email" placeholder="Nhập địa chỉ email"><span class="field-error" data-error="email"></span></label><p class="welcome-note">Thông tin được sử dụng để ghi nhận người tham gia khảo sát và gửi quà cảm ơn từ Nguyên Kim.</p><button class="welcome-submit" type="submit" disabled>BẮT ĐẦU KHẢO SÁT</button></form></section>`;
+      document.body.append(overlay);
+      document.body.style.overflow='hidden';
+      const welcomeForm=overlay.querySelector('#welcomeForm');
+      const submit=welcomeForm.querySelector('button');
+      const saved=readParticipant();
+      if(saved){Object.entries(saved).forEach(([key,value])=>{if(welcomeForm.elements[key])welcomeForm.elements[key].value=value})}
+      const cleanPhone=value=>value.replace(/[.\s()-]/g,'');
+      const validators={fullName:value=>value.trim()?'' :'Vui lòng nhập họ và tên.',phone:value=>/^(?:\+84|84|0)(?:3|5|7|8|9)\d{8}$/.test(cleanPhone(value))?'':'Vui lòng nhập số điện thoại Việt Nam hợp lệ.',email:value=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())?'':'Vui lòng nhập địa chỉ email hợp lệ.'};
+      const validate=show=>{let valid=true;Object.entries(validators).forEach(([name,check])=>{const error=check(welcomeForm.elements[name].value);const slot=welcomeForm.querySelector(`[data-error="${name}"]`);if(show||welcomeForm.elements[name].value)slot.textContent=error;else slot.textContent='';if(error)valid=false});submit.disabled=!valid;return valid};
+      welcomeForm.addEventListener('input',()=>validate(false));
+      welcomeForm.querySelectorAll('input').forEach(input=>input.addEventListener('blur',()=>validate(true)));
+      welcomeForm.addEventListener('submit',event=>{event.preventDefault();if(!validate(true))return;const participant={fullName:welcomeForm.elements.fullName.value.trim(),phone:cleanPhone(welcomeForm.elements.phone.value),email:welcomeForm.elements.email.value.trim()};saveParticipant(participant);window.nkcRespondent={name:participant.fullName,company:'',position:'',contact:participant.phone,phone:participant.phone,email:participant.email};overlay.remove();document.body.style.overflow='';document.getElementById('part-00')?.scrollIntoView({behavior:'smooth',block:'start'})});
+      document.querySelector('.hero-start')?.addEventListener('click',event=>{event.preventDefault();document.body.append(overlay);document.body.style.overflow='hidden';welcomeForm.elements.fullName.focus()},{capture:true});
+      const nextFetch=window.fetch.bind(window);
+      window.fetch=(resource,options={})=>{if(options.body&&typeof options.body==='string'){try{const payload=JSON.parse(options.body);const participant=readParticipant();if(participant){payload.fullName=participant.fullName;payload.phone=participant.phone;payload.email=participant.email;payload.respondent={name:participant.fullName,company:'',position:'',contact:participant.phone,phone:participant.phone,email:participant.email};options={...options,body:JSON.stringify(payload)}}}catch{}}return nextFetch(resource,options)};
+      document.getElementById('surveyForm')?.addEventListener('submit',()=>window.setTimeout(()=>{try{const participant=readParticipant();const records=JSON.parse(localStorage.getItem('nkc_ad_survey_responses')||'[]');if(participant&&records.length)Object.assign(records[records.length-1],participant);localStorage.setItem('nkc_ad_survey_responses',JSON.stringify(records))}catch{}},0));
+      validate(false);
+      window.updateProgress?.();
     });
   </script>
 </body></html>
