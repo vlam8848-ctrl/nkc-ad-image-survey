@@ -477,5 +477,31 @@
       document.head.append(polish);
     });
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const key=(new URLSearchParams(location.search).get('brand')||'nk').toLowerCase();
+      const sets={
+        nk:[['Laptop','images/category-laptop.jpg'],['Linh kiện','images/category-components.jpg'],['Màn hình','images/category-monitor.png'],['Máy in','images/category-printer.jpg'],['PC & Mini PC','images/category-pc.jpg'],['Phần mềm','images/category-software.png']],
+        cn:[['Laptop','images/chinh-nhan/laptop.jpg'],['Linh kiện','images/chinh-nhan/components.png'],['Màn hình','images/chinh-nhan/monitor.png'],['Máy in','images/chinh-nhan/printer.png'],['PC','images/chinh-nhan/pc.jpg'],['Phần mềm','images/chinh-nhan/software.jpg']],
+        smc:[['Laptop','images/category-laptop.jpg'],['Linh kiện','images/category-components.jpg'],['Màn hình','images/category-monitor.png'],['Máy in','images/category-printer.jpg'],['PC & Mini PC','images/category-pc.jpg'],['Phần mềm','images/category-software.png']]
+      };
+      const slides=sets[key]||sets.nk;
+      const library=document.querySelector('.ad-library');
+      if(!library)return;
+      library.innerHTML=`<div class="stable-carousel-head"><div><p>THƯ VIỆN HÌNH QUẢNG CÁO</p><h3>Hình quảng cáo đang khảo sát</h3><span>Mỗi ngành hàng một hình tiêu biểu.</span></div><span class="stable-autoplay">Tự chuyển</span></div><div class="stable-carousel"><button type="button" class="stable-arrow stable-prev" aria-label="Xem hình trước">‹</button><div class="stable-viewport"><div class="stable-track">${slides.map((slide,index)=>`<article class="stable-slide"><img src="${slide[1]}" alt="Hình quảng cáo ngành ${slide[0]}"><div><small>NHÓM NGÀNH ${String(index+1).padStart(2,'0')}</small><h4>${slide[0]}</h4></div></article>`).join('')}</div></div><button type="button" class="stable-arrow stable-next" aria-label="Xem hình tiếp theo">›</button></div><p class="stable-hint">Hình tự chuyển · dùng mũi tên để xem thêm</p>`;
+      const viewport=library.querySelector('.stable-viewport'),track=library.querySelector('.stable-track');
+      let maxStart=Math.max(0,slides.length-3);let start=0,timer=null;
+      const syncRange=()=>{const visible=innerWidth<=420?1:innerWidth<=720?2:3;maxStart=Math.max(0,slides.length-visible);};
+      const render=next=>{start=((next%(maxStart+1))+(maxStart+1))%(maxStart+1);const card=track.querySelector('.stable-slide');const gap=16;const distance=(card?.getBoundingClientRect().width||0)+gap;track.style.transform=`translate3d(-${start*distance}px,0,0)`;const focus=slides[Math.min(start+1,slides.length-1)];document.dispatchEvent(new CustomEvent('nkc:slidechange',{detail:{name:focus[0],image:focus[1]}}));};
+      const stop=()=>{if(timer){clearInterval(timer);timer=null}};const play=()=>{stop();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>render(start>=maxStart?0:start+1),4400)};
+      library.querySelector('.stable-prev').addEventListener('click',()=>{render(start===0?maxStart:start-1);play()});
+      library.querySelector('.stable-next').addEventListener('click',()=>{render(start>=maxStart?0:start+1);play()});
+      viewport.addEventListener('pointerenter',stop);viewport.addEventListener('pointerleave',play);viewport.addEventListener('pointerdown',stop);viewport.addEventListener('pointerup',play);
+      window.addEventListener('resize',()=>{syncRange();render(start)},{passive:true});syncRange();render(0);play();
+      const style=document.createElement('style');style.textContent=`
+        .ad-library{padding:26px!important}.stable-carousel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:17px}.stable-carousel-head p{margin:0 0 4px!important;font-size:12px!important;font-weight:800;letter-spacing:.11em}.stable-carousel-head h3{margin:0!important;font-size:24px!important;line-height:1.2}.stable-carousel-head span:not(.stable-autoplay){font-size:14px}.stable-autoplay{flex:none;padding:7px 11px;border-radius:99px;background:rgba(255,255,255,.78);font-size:12px!important;font-weight:800}.stable-carousel{position:relative;display:flex;align-items:center;gap:12px}.stable-viewport{overflow:hidden;flex:1;padding:3px}.stable-track{display:flex;gap:16px;transition:transform .62s cubic-bezier(.22,1,.36,1);will-change:transform}.stable-slide{flex:0 0:calc((100% - 32px)/3);min-width:0;overflow:hidden;border:1px solid rgba(255,255,255,.75);border-radius:17px;background:rgba(255,255,255,.94);box-shadow:0 7px 18px rgba(26,50,72,.12)}.stable-slide img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#fff}.stable-slide>div{padding:9px 11px 10px;color:#17324d}.stable-slide small{font-size:10px;font-weight:800;letter-spacing:.07em;color:#52708c}.stable-slide h4{margin:1px 0 0!important;font-size:16px!important;line-height:1.2!important}.stable-arrow{position:relative;z-index:2;display:grid;place-items:center;width:42px;height:42px;flex:none;border:1px solid rgba(255,255,255,.8);border-radius:50%;background:#17324d;color:#fff;font-size:29px;line-height:1;box-shadow:0 5px 14px rgba(21,43,66,.2);transition:transform .18s ease,background .18s ease}.stable-arrow:hover{transform:scale(1.08);background:#0f5fd7}.stable-arrow:active{transform:scale(.95)}.stable-hint{margin:13px 0 0!important;text-align:right!important;font-size:13px!important;font-weight:700!important}@media(max-width:720px){.ad-library{padding:20px!important}.stable-carousel-head h3{font-size:20px!important}.stable-autoplay{display:none}.stable-carousel{gap:7px}.stable-arrow{width:36px;height:36px;font-size:25px}.stable-track{gap:12px}.stable-slide{flex-basis:calc((100% - 12px)/2)}.stable-hint{text-align:center!important}.stable-slide h4{font-size:14px!important}}@media(max-width:420px){.stable-slide{flex-basis:100%}.stable-arrow{position:absolute}.stable-prev{left:-9px}.stable-next{right:-9px}.stable-viewport{margin:0 18px}}
+      `;document.head.append(style);
+    });
+  </script>
 </body></html>
 
