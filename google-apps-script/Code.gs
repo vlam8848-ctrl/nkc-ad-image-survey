@@ -44,7 +44,9 @@ function doPost(event) {
       data.decisionSwitch || '',
       data.fullName || data.respondent?.name || '',
       data.phone || data.respondent?.phone || data.respondent?.contact || '',
-      data.email || data.respondent?.email || ''
+      data.email || data.respondent?.email || '',
+      data.surveyBrand || '',
+      data.companyName || ''
     ]);
 
     return jsonResponse({ ok: true });
