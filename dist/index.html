@@ -182,8 +182,8 @@
       document.body.append(stickyPreview);
       const previewImage=stickyPreview.querySelector('img'),previewCaption=stickyPreview.querySelector('figcaption');
       const setPreview=item=>{if(!item)return;previewImage.src=item.image;previewImage.alt='Hình quảng cáo ngành '+item.name;previewCaption.textContent=item.name};
-      setPreview({name:'Laptop',image:'images/category-laptop.jpg'});
-      document.addEventListener('nkc:slidechange',event=>setPreview(event.detail));
+      const stickyBrand=(new URLSearchParams(location.search).get('brand')||'nk').toLowerCase();
+      document.addEventListener('nkc:slidechange',event=>{const item=event.detail;if(item?.source==='stable-carousel'&&item.brand===stickyBrand)setPreview(item)});
       const revealStickyPreview=()=>{const firstReview=document.querySelector('[data-name="understandProduct"]');const form=document.querySelector('#surveyForm');if(!firstReview||!form)return;const started=firstReview.getBoundingClientRect().top<window.innerHeight*.78;const withinForm=form.getBoundingClientRect().bottom>180;stickyPreview.classList.toggle('is-visible',started&&withinForm)};
       window.addEventListener('scroll',revealStickyPreview,{passive:true});
       revealStickyPreview();
@@ -493,7 +493,7 @@
       let maxStart=Math.max(0,slides.length-3);let start=0,timer=null;
       const dots=library.querySelector('.stable-dots');
       const syncRange=()=>{const visible=innerWidth<=420?1:innerWidth<=720?2:3;maxStart=Math.max(0,slides.length-visible);if(dots){dots.innerHTML=Array.from({length:maxStart+1},(_,index)=>`<button type="button" aria-label="Xem vị trí ${index+1}"></button>`).join('');dots.querySelectorAll('button').forEach((dot,index)=>dot.addEventListener('click',()=>{render(index);play()}));}};
-      const render=next=>{start=((next%(maxStart+1))+(maxStart+1))%(maxStart+1);const card=track.querySelector('.stable-slide');const gap=16;const distance=(card?.getBoundingClientRect().width||0)+gap;track.style.transform=`translate3d(-${start*distance}px,0,0)`;track.querySelectorAll('.stable-slide').forEach((item,index)=>item.classList.toggle('is-active',index===start));dots?.querySelectorAll('button').forEach((dot,index)=>dot.classList.toggle('is-active',index===start));const focus=slides[start];document.dispatchEvent(new CustomEvent('nkc:slidechange',{detail:{name:focus[0],image:focus[2]}}));};
+      const render=next=>{start=((next%(maxStart+1))+(maxStart+1))%(maxStart+1);const card=track.querySelector('.stable-slide');const gap=16;const distance=(card?.getBoundingClientRect().width||0)+gap;track.style.transform=`translate3d(-${start*distance}px,0,0)`;track.querySelectorAll('.stable-slide').forEach((item,index)=>item.classList.toggle('is-active',index===start));dots?.querySelectorAll('button').forEach((dot,index)=>dot.classList.toggle('is-active',index===start));const focus=slides[start];document.dispatchEvent(new CustomEvent('nkc:slidechange',{detail:{source:'stable-carousel',brand:key,name:focus[0],image:focus[2]}}));};
       const stop=()=>{if(timer){clearInterval(timer);timer=null}};const play=()=>{stop();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>render(start>=maxStart?0:start+1),4400)};
       library.querySelector('.stable-prev')?.addEventListener('click',()=>{render(start===0?maxStart:start-1);play()});
       library.querySelector('.stable-next')?.addEventListener('click',()=>{render(start>=maxStart?0:start+1);play()});
